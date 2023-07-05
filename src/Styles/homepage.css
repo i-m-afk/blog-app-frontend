@@ -1,0 +1,121 @@
+.categoryBar{
+    background: rgba(158, 158, 158, 0.66);
+    display: flex;
+    gap: 1rem;
+    overflow: hidden;
+    padding: .5rem 4rem;
+    font-size: .8rem;
+}
+
+.categoryBar p{
+    cursor: pointer;
+}
+
+.home_main{
+    display: flex;
+    flex-direction: column;
+    padding: 0rem 4rem;
+}
+
+.filter{
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0rem 4rem;
+}
+
+.filter select, .filter select option{
+    width: 160px;
+    height: 30px;
+    padding: .1rem 1rem;
+    border-radius: 8px;
+}
+.blogs{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+}
+.card{
+    min-height: 260px;
+    background-image:
+            linear-gradient(45deg,
+              rgba(0, 0, 0, 0.044),
+              rgba(0, 0, 0, 0.873)), url('https://images.unsplash.com/photo-1688362379195-b8c04f735968?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80');
+    background-size: cover;
+    width: 100%;
+    
+    border-radius: 8px;
+    display: flex;   
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+.card .top {
+    padding: 1rem;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: flex-end;
+    padding-bottom: .5rem;
+    
+}
+.card .top .views{
+    color: #C4C4C4;
+    display: flex;
+    height: fit-content;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card .card-body{
+    color : #b8b8b8;
+    padding: .5rem 1rem;
+    overflow: hidden;
+    font-size: 1.2rem;
+    font-weight: 600;
+    flex : 1;
+    cursor: pointer;
+    
+}
+
+.card .bottom{
+    height: 70px;
+}
+
+.card .bottom .cat{
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    overflow: hidden;
+    color: #b8b8b8;
+    background: rgba(4, 4, 4, 0.46);
+    backdrop-filter: blur(1px);
+    transition: all 0.2s ease-in;
+    opacity: 0;
+}
+
+.card .bottom .info{
+    width: 100%;
+    background: #E4E4E4;
+    height: 40px;
+    border-radius: 0 0 8px 8px;
+    display: flex;
+    padding: 0rem 1rem;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+
+.card .bottom .author{
+    cursor: pointer;
+    user-select: none;
+}
+
+.card:hover .cat{
+    opacity: 1;
+}

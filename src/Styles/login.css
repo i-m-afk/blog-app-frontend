@@ -1,0 +1,16 @@
+.login{
+    margin: 5rem auto;
+    max-width: 600px;
+}
+  .login h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    text-transform: uppercase;
+  }
+
+  .login .primary_btn{
+    border: none;
+    margin-bottom: 2rem;
+  }
+ 

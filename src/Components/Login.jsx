@@ -1,8 +1,11 @@
-import '../Styles/styles.css'
-import React, { useState } from 'react';
+import "../Styles/styles.css";
+import "../Styles/login.css";
+import React, { useState } from "react";
+import Navbar from "./Navbar";
+import { Link } from "react-router-dom";
 
 const Login = () => {
-  const [data, setData] = useState({ email: '', password: '' });
+  const [data, setData] = useState({ email: "", password: "" });
 
   const handleInputChange = (event) => {
     setData({ ...data, [event.target.name]: event.target.value });
@@ -14,15 +17,38 @@ const Login = () => {
   };
 
   return (
-    <div className="login">
-      <h2>FORM</h2>
-      <form onSubmit={handleSubmit}>
-        Email<input type="email" placeholder="email" id="input-email" name="email" onChange={handleInputChange} />
-        Password<input type="password" placeholder="password" id="input-pass" name="password" onChange={handleInputChange} />
-        <button type="submit" id="btn-login">Login</button>
-        <button type="submit" id="btn-signup">Signup</button>
-      </form>
-    </div>
+    <>
+      <Navbar />
+      <div className="login form-wrapper">
+        <h2>Login</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="input_grp">
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              placeholder="email"
+              name="email"
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="input_grp">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              placeholder="password"
+              name="password"
+              onChange={handleInputChange}
+            />
+          </div>
+          <button type="submit" className="primary_btn">
+            Login
+          </button>
+          <Link to="/signup">
+            <div className="secondary_btn">Signup</div>
+          </Link>
+        </form>
+      </div>
+    </>
   );
 };
 
