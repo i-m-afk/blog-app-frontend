@@ -1,23 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
-
+import axios from "axios";
+import Cookies from "js-cookie";
 const Signup = () => {
+  if (Cookies.get("login")) {
+    window.location.href = "/";
+  }
   const {
     register,
     handleSubmit,
-    getValues,
     formState: { errors },
+    watch,
   } = useForm();
 
-  const onSubmit = async (data) => {
-    console.log(data);
-  };
+  const api = axios.create({
+    baseURL: "https://shayrana-backend.onrender.com/",
+  });
 
-  const validatePassword = (value) => {
-    const { password } = getValues();
-    return value === password || "Passwords do not match";
+  const [serverError, setServerError] = useState("");
+
+  const onSubmit = async (data) => {
+    setServerError("");
+    try {
+      // const response = await api.get("/blogs");
+      const response = await api.post("/users/signup", {
+        email: data.email,
+        fname: data.first_name,
+        lname: data.last_name,
+        dob: data.dob,
+        password: data.password,
+        confirm: data.confirm_password,
+      });
+      setServerError(response?.data?.message);
+      if (response?.data.success === true) {
+        // setCookie("login", "true", 15);
+        // setCookie("id", response?.data?._id, 15);
+        window.location.href = "/login";
+      }
+    } catch (error) {
+      setServerError(error.response?.data?.message);
+    }
   };
 
   return (
@@ -29,16 +53,25 @@ const Signup = () => {
           <div className="input_grp">
             <label htmlFor="first_name">First Name:</label>
             <input
-              {...register("first_name", { required: true })}
+              {...register("first_name", {
+                required: {
+                  value: true,
+                  message: "First name is required",
+                },
+              })}
               type="text"
               id="first_name"
-              name="first_name"
             />
           </div>
           <div className="input_grp">
             <label htmlFor="last_name">Last Name:</label>
             <input
-              {...register("last_name", { required: true })}
+              {...register("last_name", {
+                required: {
+                  value: true,
+                  message: "Last name is required",
+                },
+              })}
               type="text"
               id="last_name"
               name="last_name"
@@ -47,7 +80,12 @@ const Signup = () => {
           <div className="input_grp">
             <label htmlFor="email">Email:</label>
             <input
-              {...register("email", { required: true })}
+              {...register("email", {
+                required: {
+                  value: true,
+                  message: "Email is required",
+                },
+              })}
               type="email"
               id="email"
               name="email"
@@ -56,12 +94,23 @@ const Signup = () => {
           </div>
           <div className="input_grp">
             <label htmlFor="dob">Date of Birth:</label>
-            <input type="date" id="dob" name="dob" required />
+            <input
+              {...register("dob")}
+              type="date"
+              id="dob"
+              name="dob"
+              required
+            />
           </div>
           <div className="input_grp">
             <label htmlFor="password">Password:</label>
             <input
-              {...register("password", { required: true })}
+              {...register("password", {
+                required: {
+                  value: true,
+                  message: "Password is required",
+                },
+              })}
               type="password"
               id="password"
               name="password"
@@ -72,8 +121,17 @@ const Signup = () => {
             <label htmlFor="confirm_password">Confirm Password:</label>
             <input
               {...register("confirm_password", {
-                required: true,
-                validate: validatePassword,
+                required: {
+                  value: true,
+                  message: "Confirm Password is required",
+                },
+                validate: (value) => {
+                  if (value === watch("password")) {
+                    return true;
+                  } else {
+                    return "Passwords do not match";
+                  }
+                },
               })}
               type="password"
               id="confirm_password"
@@ -82,9 +140,13 @@ const Signup = () => {
             />
           </div>
           <div className="errors">
-            {errors.confirm_password && (
-              <p>{errors.confirm_password.message}</p>
-            )}
+            {errors.confirm_password?.message ||
+              errors.password?.message ||
+              errors.email?.message ||
+              errors.last_name?.message ||
+              errors.first_name?.message ||
+              errors.dob?.message ||
+              serverError}
           </div>
 
           <button type="submit" className="primary_btn">

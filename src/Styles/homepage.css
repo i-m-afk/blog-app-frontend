@@ -2,13 +2,28 @@
     background: rgba(158, 158, 158, 0.66);
     display: flex;
     gap: 1rem;
+    align-items: center;
     overflow: hidden;
-    padding: .5rem 4rem;
+    padding: 0rem 4rem;
     font-size: .8rem;
 }
 
 .categoryBar p{
     cursor: pointer;
+    padding: .3rem 0;
+    margin: .5rem 0;
+}
+
+.categoryBar p.activecategory{
+    color: #c2410a;
+    border: 1px solid rgba(0, 0, 0, 0.251);
+    padding: .3rem 1rem;
+    border-radius: 8px;
+    margin: .5rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: .5rem;
 }
 
 .home_main{
@@ -38,11 +53,11 @@
 }
 .card{
     min-height: 260px;
-    background-image:
+    /* background-image:
             linear-gradient(45deg,
               rgba(0, 0, 0, 0.044),
               rgba(0, 0, 0, 0.873)), url('https://images.unsplash.com/photo-1688362379195-b8c04f735968?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80');
-    background-size: cover;
+    background-size: cover; */
     width: 100%;
     
     border-radius: 8px;
@@ -67,6 +82,10 @@
     height: fit-content;
     flex-direction: column;
     align-items: center;
+}
+
+.card a{
+    height: 100%;
 }
 
 .card .card-body{
@@ -109,11 +128,25 @@
     align-items: center;
 }
 
+.card .bottom .info .cta{
+    cursor: pointer;
+    border: 1px solid #00000035;
+    padding: .2rem;
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+}
+.card .bottom .info .cta a{
+    color: #000;
+    display: grid;
+    place-items: center;
+}
 
 
-.card .bottom .author{
+.card .bottom a .author{
     cursor: pointer;
     user-select: none;
+    color: #000;
 }
 
 .card:hover .cat{

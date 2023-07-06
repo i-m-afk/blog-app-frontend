@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../Styles/styles.css";
 import { useForm } from "react-hook-form";
 import Navbar from "./Navbar";
 import axios from "axios";
 import Cookies from "js-cookie";
-const NewPost = () => {
+import { useParams } from "react-router-dom";
+const EditBlog = () => {
+  const { blogId } = useParams();
   if (!Cookies.get("login")) {
     window.location.href = "/";
   }
@@ -15,17 +17,35 @@ const NewPost = () => {
     formState: { errors },
   } = useForm({});
 
-  const api = axios.create({
-    baseURL: "https://shayrana-backend.onrender.com/",
-  });
+  const [blog, setBlog] = useState({});
+
+  useEffect(() => {
+    const api = axios.create({
+      baseURL: "https://shayrana-backend.onrender.com/",
+    });
+    const getBlog = async () => {
+      try {
+        const response = await api.get(`/blogs/${blogId}`);
+        if (response.data.success === true) {
+          setBlog(response.data.blog);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getBlog();
+  }, [blogId]);
 
   const onSubmit = async (data) => {
+    const api = axios.create({
+      baseURL: "https://shayrana-backend.onrender.com/",
+    });
     setServerError("");
     const cats = data.categories.split(",").map((item) => item.trim());
-    console.log(data.image_url);
+
     try {
-      const response = await api.post(
-        "/blogs",
+      const response = await api.put(
+        `/blogs/${blogId}`,
         {
           title: data.title,
           text: data.text,
@@ -39,7 +59,6 @@ const NewPost = () => {
           withCredentials: true,
         }
       );
-
       setServerError(response?.data?.message);
       if (response?.data.success === true) {
         window.location.href = "/";
@@ -53,7 +72,7 @@ const NewPost = () => {
       <Navbar />
       <div className="form-wrapper login">
         <div className="form-container">
-          <h2 className="form-subheader">Create New Blog</h2>
+          <h2 className="form-subheader">Update Blog</h2>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="input_grp">
               <label htmlFor="title">Title:</label>
@@ -68,6 +87,7 @@ const NewPost = () => {
                 id="title"
                 name="title"
                 required
+                defaultValue={blog.title}
               />
             </div>
             <div className="input_grp">
@@ -83,18 +103,17 @@ const NewPost = () => {
                 })}
                 rows={5}
                 required
-                defaultValue={""}
+                defaultValue={blog.text}
               />
             </div>
             <div className="input_grp">
-              <label htmlFor="image_url">
-                Image URL (can be empty or use Unsplash )
-              </label>
+              <label htmlFor="image_url">Image URL (can be empty)</label>
               <input
                 {...register("image_url")}
                 type="text"
                 id="image_url"
                 name="image_url"
+                defaultValue={blog.image}
               />
             </div>
             <div className="input_grp">
@@ -120,7 +139,7 @@ const NewPost = () => {
                 serverError}
             </div>
             <button type="submit" className="primary_btn">
-              Publish
+              Update
             </button>
           </form>
         </div>
@@ -128,4 +147,4 @@ const NewPost = () => {
     </>
   );
 };
-export default NewPost;
+export default EditBlog;

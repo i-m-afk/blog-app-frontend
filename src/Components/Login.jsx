@@ -3,17 +3,60 @@ import "../Styles/login.css";
 import React, { useState } from "react";
 import Navbar from "./Navbar";
 import { Link } from "react-router-dom";
-
+import { useForm } from "react-hook-form";
+import axios from "axios";
+import Cookies from "js-cookie";
 const Login = () => {
-  const [data, setData] = useState({ email: "", password: "" });
+  if (Cookies.get("login")) {
+    window.location.href = "/";
+  }
+  const [serverError, setServerError] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const handleInputChange = (event) => {
-    setData({ ...data, [event.target.name]: event.target.value });
-  };
+  const api = axios.create({
+    baseURL: "https://shayrana-backend.onrender.com/",
+  });
+  function setCookie(name, value, minutes) {
+    const expires = new Date();
+    expires.setTime(expires.getTime() + minutes * 60 * 1000); // Convert minutes to milliseconds
+    document.cookie =
+      name +
+      "=" +
+      encodeURIComponent(value) +
+      ";expires=" +
+      expires.toUTCString() +
+      ";path=/";
+  }
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(data);
+  const onSubmit = async (data) => {
+    setServerError("");
+    try {
+      const response = await api.post(
+        "/users/login",
+        {
+          email: data.email,
+          password: data.password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      setServerError(response?.data?.message);
+      if (response?.data.success === true) {
+        setCookie("login", "true", 15);
+        setCookie("id", response?.data?._id, 15);
+        window.location.href = "/";
+      }
+    } catch (error) {
+      setServerError(error.response?.data?.message);
+    }
   };
 
   return (
@@ -21,14 +64,19 @@ const Login = () => {
       <Navbar />
       <div className="login form-wrapper">
         <h2>Login</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="input_grp">
             <label htmlFor="email">Email</label>
             <input
               type="email"
               placeholder="email"
               name="email"
-              onChange={handleInputChange}
+              {...register("email", {
+                required: {
+                  value: true,
+                  message: "Email is required",
+                },
+              })}
             />
           </div>
           <div className="input_grp">
@@ -37,8 +85,22 @@ const Login = () => {
               type="password"
               placeholder="password"
               name="password"
-              onChange={handleInputChange}
+              {...register("password", {
+                required: {
+                  value: true,
+                  message: "Password is required",
+                },
+              })}
             />
+          </div>
+          <div className="errors">
+            {errors.confirm_password?.message ||
+              errors.password?.message ||
+              errors.email?.message ||
+              errors.last_name?.message ||
+              errors.first_name?.message ||
+              errors.dob?.message ||
+              serverError}
           </div>
           <button type="submit" className="primary_btn">
             Login
