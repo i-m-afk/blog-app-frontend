@@ -5,6 +5,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
 import axios from "axios";
+
 const Navbar = () => {
   const location = useLocation();
   const api = axios.create({
@@ -24,11 +25,15 @@ const Navbar = () => {
       console.log(error);
     }
   };
+
   return (
     <div className="navbar">
       <div className="nav_items">
         <Link to="/">
-          <p className="title">Shayrana</p>
+          <div className="logo-container">
+            <img src='./logo192.png' alt='logo' className="logo" />
+            <p className="title">Shayrana</p>
+          </div>
         </Link>
         {Cookies.get("login") && location.pathname !== "/newBlog" && (
           <Link to="/newBlog">
@@ -60,5 +65,4 @@ const Navbar = () => {
     </div>
   );
 };
-
 export default Navbar;

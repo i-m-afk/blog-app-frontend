@@ -34,9 +34,27 @@
     
 }
 
-
-
 .title{
     font-family: 'Niconne',sans-serif;
     font-size: 2rem;
 }
+
+
+.nav_items {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+  }
+  
