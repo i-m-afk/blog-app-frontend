@@ -5,25 +5,27 @@ import "../Styles/blog.css";
 import axios from "axios";
 import { FaUserCircle } from "react-icons/fa";
 import { timeDiff } from "./Card";
+import ErrorBoundary from "./ErrorBoundary";
+
 const Blog = () => {
   const { blogId } = useParams();
   const [blog, setBlog] = useState({});
-
   const [author, setAuthor] = useState({});
+
   useEffect(() => {
     const api = axios.create({
       baseURL: "https://shayrana-backend.onrender.com/",
     });
     const fetchBlogDetails = async () => {
-      const response = await api.get(`/blogs/${blogId}`);
-      setBlog(response.data.blog);
-      setAuthor(response.data.authorDetails);
+      try {
+        const response = await api.get(`/blogs/${blogId}`);
+        setBlog(response.data.blog);
+        setAuthor(response.data.authorDetails);
+      } catch (error) {
+        console.log(error);
+      }
     };
-    try {
-      fetchBlogDetails();
-    } catch (err) {
-      console.log(err);
-    }
+    fetchBlogDetails();
   }, [blogId]);
 
   const url = blog?.image
@@ -34,29 +36,31 @@ const Blog = () => {
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
   };
-  return (
-    <div className="blog">
-      <Navbar />
-      <section className="image" style={styles}></section>
-      <main>
-        <div className="left">
-          <h1>{blog?.title}</h1>
-          <p>{blog?.text}</p>
-        </div>
-        <div className="right">
-          <Link to={`/user/${author.id}`}>
-            <div className="author">
-              <FaUserCircle size={34} color="#2d2d2d" />
-              <span>{author?.fname + " " + author?.lname}</span>
-            </div>
-          </Link>
 
-          <p>{author?.email}</p>
-          <p>Views : {blog?.views}</p>
-          <p>Published {timeDiff(blog?.time)} ago</p>
-        </div>
-      </main>
-    </div>
+  return (
+    <ErrorBoundary>
+      <div className="blog">
+        <Navbar />
+        <section className="image" style={styles}></section>
+        <main>
+          <div className="left">
+            <h1>{blog?.title}</h1>
+            <p>{blog?.text}</p>
+          </div>
+          <div className="right">
+            <Link to={`/user/${author.id}`}>
+              <div className="author">
+                <FaUserCircle size={34} color="#2d2d2d" />
+                <span>{author?.fname + " " + author?.lname}</span>
+              </div>
+            </Link>
+            <p>{author?.email}</p>
+            <p>Views: {blog?.views}</p>
+            <p>Published {timeDiff(blog?.time)} ago</p>
+          </div>
+        </main>
+      </div>
+    </ErrorBoundary>
   );
 };
 
