@@ -1,0 +1,30 @@
+.page404 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f9f9f9;
+  }
+  
+  .page404 img{
+    margin-bottom: 2rem;
+    max-width: 100vw;
+  }
+  
+  .text {
+    font-size: 120px;
+    font-weight: bold;
+    fill: #c33c3c;
+  }
+  
+  .heading {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .subtext {
+    font-size: 16px;
+    color: #777;
+  }
+  

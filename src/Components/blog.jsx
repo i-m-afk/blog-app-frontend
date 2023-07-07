@@ -15,9 +15,13 @@ const Blog = () => {
       baseURL: "https://shayrana-backend.onrender.com/",
     });
     const fetchBlogDetails = async () => {
-      const response = await api.get(`/blogs/${blogId}`);
-      setBlog(response.data.blog);
-      setAuthor(response.data.authorDetails);
+      try {
+        const response = await api.get(`/blogs/${blogId}`);
+        setBlog(response.data.blog);
+        setAuthor(response.data.authorDetails);
+      } catch (err) {
+        console.log(err);
+      }
     };
     try {
       fetchBlogDetails();
