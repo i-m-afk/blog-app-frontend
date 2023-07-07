@@ -4,8 +4,10 @@
     gap: 1rem;
     align-items: center;
     overflow: hidden;
-    padding: 0rem 4rem;
+    padding: 0rem 1rem;
     font-size: .8rem;
+    max-width: 1920px;
+    margin: 0 auto;
 }
 
 .categoryBar p{
@@ -29,7 +31,7 @@
 .home_main{
     display: flex;
     flex-direction: column;
-    padding: 0rem 4rem;
+    padding: 0rem 1rem;
 }
 
 .filter{
@@ -37,7 +39,8 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    padding: 0rem 4rem;
+    padding: 0rem 0rem;
+    max-width: 1920px;
 }
 
 .filter select, .filter select option{
@@ -48,9 +51,53 @@
 }
 .blogs{
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(1, 1fr);
     gap: 1rem;
+    max-width: 1920px;
+    margin: 0 auto;
 }
+@media screen and (min-width : 500px){
+    .blogs{
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media screen and (min-width : 600px){
+    .categoryBar{
+        padding: 0rem 4rem;
+    }
+    .filter{
+        padding: 0rem 4rem;
+    }
+    .blogs{
+        padding: 0rem 4rem;
+    }
+}
+@media screen and (min-width : 900px){
+    .blogs{
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+@media screen and (min-width : 1200px){
+    .blogs{
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+@media screen and (min-width : 1500px){
+    .blogs{
+        grid-template-columns: repeat(5, 1fr);
+    }
+    
+}
+
+@media screen and (min-width : 1920px){
+    .filter{
+        margin: 0 auto;
+        width: 1920px;
+    }
+    
+}
+    
+
 .card{
     min-height: 260px;
     /* background-image:

@@ -12,38 +12,98 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    max-width: 1920px;
+    margin: 0 auto;
+    padding-left: 1rem;
+}
+@media screen and (min-width : 700px){
+    .navbar{
+        padding-left: 4rem;
+    }
 }
 
 .navbar .add_btn,.navbar .signup_btn{
-    width: 160px;
-    display: flex;
+    width: 140px;
     justify-content: center;
     gap: .5rem;
+    display: none;
+}
+
+@media screen and (min-width : 700px){
+    .navbar .add_btn,.navbar .signup_btn{
+        display: flex;
+    }
+}
+
+.nav_right{
+    display: flex;
 }
 .nav_items{
-    padding:  0 4rem;
+    padding:  0 1rem;
     display: flex;
     gap: 2rem;
 }
 
+
+
 .signup_btn{
-    /* padding: 2rem 2rem; */
-   
-    width: 160px;
+    width: 100px;
     height: 40px;
-    
 }
+
+.ham{
+    width: fit-content;
+    padding: .5rem 1rem;
+    cursor: pointer;
+    display: flex;
+    background-color: #333333;
+    border-radius: 8px;
+}
+
+@media screen and (min-width : 700px){
+    .ham{
+        display: none;
+        visibility: hidden;
+        border: 1px solid #ffffff;
+    }
+}
+    
 
 .title{
     font-family: 'Niconne',sans-serif;
-    font-size: 2rem;
+    font-size: 1.5rem;
+    display: none;
 }
+
+@media screen and (min-width : 300px){
+    .title{
+        display: flex;
+    } 
+}
+@media screen and (min-width : 600px){
+    .title{
+        font-size: 2rem;
+    } 
+}
+
+
 
 
 .nav_items {
   display: flex;
   gap: 2rem;
   align-items: center;
+}
+
+
+.nav_buttons{
+    display: none;
+}
+
+@media screen and (min-width : 700px){
+    .nav_buttons{
+        display: flex;
+    }
 }
 
 .logo-container {
@@ -53,8 +113,90 @@
 }
 
 .logo {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     object-fit: cover;
   }
+.navbar .acc{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+.navbar .acc .secondary_btn{
+    color: #212121;
+    border: none;
+}
+.navbar .acc .secondary_btn:hover{
+    background-color: #ffffff;
+    color: #c33c3c;
+}
+  .navbar .dropdown{
+    position: absolute;
+    top: 40px;
+    display: none;
+    width: 140px;
+    background-color: #E8E8E8;
+    border-radius: 8px;
+    color: #212121;
+  }
+  .navbar .dropdown .dropdown-btn{
+    /* padding: 0 1.5rem; */
+  text-transform: uppercase;
+  color: #2d2d2d;
+  /* color: #c33c3c; */
+  cursor: pointer;
+  user-select: none;
+  height: 40px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  border-radius: 8px;
+  }
+.navbar .dropdown .dropdown-btn:hover{
+    background-color: #ffffff;
+    color: #c33c3c;
+}
+
+  .navbar .acc:hover .dropdown{
+    display: block;
+  }
   
+.sidebar{
+    max-width: 400px;
+    width: 80vw;
+    /* height: 40vh; */
+    background-color: #2d2d2d;
+    position: absolute;
+    padding: 1rem;
+    right: 0;
+    display: none;
+    flex-direction: column;
+    transition: all .5s ease-in-out;
+    user-select: none;
+}
+
+.sidebar_item{
+    padding: 1rem 2rem;
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    color :#E8E8E8;
+    text-transform: uppercase;
+}
+.sidebar_item a{
+    color :#E8E8E8;
+}
+
+.sidebar_item:hover{
+    border: 1px solid #c33c3c;
+}
+
+@media  screen and (min-width : 700px){
+    .sidebar{
+        display: none;
+    }
+    
+}

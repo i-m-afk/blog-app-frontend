@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import "../Styles/navbar.css";
-import { HiPlusCircle } from "react-icons/hi";
+import { HiPlusCircle, HiMenuAlt1 } from "react-icons/hi";
 import { FaUserCircle } from "react-icons/fa";
+import { IoLogOutOutline } from "react-icons/io5";
 import { Link, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -11,6 +12,10 @@ const Navbar = () => {
   const api = axios.create({
     baseURL: "https://shayrana-backend.onrender.com/",
   });
+
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const sideStyle = sidebarOpen ? { display: "flex" } : { display: "none" };
+
   const handleLogout = async () => {
     try {
       await api.get("/users/logout", {
@@ -20,6 +25,7 @@ const Navbar = () => {
         withCredentials: true,
       });
       Cookies.remove("login");
+      Cookies.remove("id");
       window.location.href = "/";
     } catch (error) {
       console.log(error);
@@ -27,42 +33,90 @@ const Navbar = () => {
   };
 
   return (
-    <div className="navbar">
-      <div className="nav_items">
-        <Link to="/">
-          <div className="logo-container">
-            <img src="/logo192.png" alt="logo" className="logo" />
-            <p className="title">Shayrana</p>
+    <>
+      <div className="navbar">
+        <div className="nav_items">
+          <Link to="/">
+            <div className="logo-container">
+              <img src="/logo192.png" alt="logo" className="logo" />
+              <p className="title">Shayrana</p>
+            </div>
+          </Link>
+          {Cookies.get("login") && location.pathname !== "/newBlog" && (
+            <Link to="/newBlog">
+              <div className="add_btn primary_btn">
+                <HiPlusCircle size={22} />
+                BLOG
+              </div>
+            </Link>
+          )}
+        </div>
+        <div className="nav_right">
+          <div className="nav_items">
+            {!Cookies.get("login") && location.pathname === "/signup" && (
+              <Link to="/login" className="nav_buttons">
+                <div className="signup_btn primary_btn">Login</div>
+              </Link>
+            )}
+            {!Cookies.get("login") && location.pathname !== "/signup" && (
+              <Link to="/signup" className="nav_buttons">
+                <div className="signup_btn primary_btn">Signup</div>
+              </Link>
+            )}
+            {Cookies.get("login") && (
+              <div className="acc nav_buttons">
+                <Link to={`user/${Cookies.get("id")}`}>
+                  <div className="signup_btn secondary_btn">
+                    <FaUserCircle size={22} />
+                    Me
+                  </div>
+                </Link>
+                <div className="dropdown">
+                  {/* <div className="dropdown-btn">Account</div>
+              <hr /> */}
+                  <div onClick={handleLogout} className="dropdown-btn">
+                    <IoLogOutOutline size={22} />
+                    LOGOUT
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
-        </Link>
-        {Cookies.get("login") && location.pathname !== "/newBlog" && (
-          <Link to="/newBlog">
-            <div className="add_btn primary_btn">
-              <HiPlusCircle size={22} />
-              NEW BLOG
+          <div
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="nav_items ham"
+          >
+            <HiMenuAlt1 size={22} />
+          </div>
+        </div>
+      </div>
+      <div className="sidebar" style={sideStyle}>
+        {!Cookies.get("login") && (
+          <div className="sidebar_item">
+            <Link to="/login">Login</Link>
+          </div>
+        )}
+        {!Cookies.get("login") && (
+          <div className="sidebar_item">
+            <Link to="/signup">Signup</Link>
+          </div>
+        )}
+        {Cookies.get("login") && (
+          <Link to={`./user/${Cookies.get("id")}`}>
+            <div className="sidebar_item">
+              <FaUserCircle size={22} />
+              Me
             </div>
           </Link>
         )}
-      </div>
-      <div className="nav_items">
-        {!Cookies.get("login") && location.pathname === "/signup" && (
-          <Link to="/login">
-            <div className="signup_btn primary_btn">Login</div>
-          </Link>
-        )}
-        {!Cookies.get("login") && location.pathname !== "/signup" && (
-          <Link to="/signup">
-            <div className="signup_btn primary_btn">Signup</div>
-          </Link>
-        )}
         {Cookies.get("login") && (
-          <div onClick={handleLogout} className="signup_btn secondary_btn">
-            <FaUserCircle size={22} />
+          <div onClick={handleLogout} className="sidebar_item">
+            <IoLogOutOutline size={22} />
             LOGOUT
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 };
 export default Navbar;

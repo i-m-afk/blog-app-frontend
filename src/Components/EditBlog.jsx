@@ -107,7 +107,9 @@ const EditBlog = () => {
               />
             </div>
             <div className="input_grp">
-              <label htmlFor="image_url">Image URL (can be empty)</label>
+              <label htmlFor="image_url">
+                Image URL (can be empty or Unsplash URL)
+              </label>
               <input
                 {...register("image_url")}
                 type="text"
@@ -117,7 +119,9 @@ const EditBlog = () => {
               />
             </div>
             <div className="input_grp">
-              <label htmlFor="categories">Categories:</label>
+              <label htmlFor="categories">
+                Categories: ( Comma Seperated ){" "}
+              </label>
               <input
                 {...register("categories", {
                   required: {

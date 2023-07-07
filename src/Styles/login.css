@@ -1,6 +1,11 @@
 .login{
-    margin: 5rem auto;
+    margin: 0 auto;
     max-width: 600px;
+}
+@media screen and (min-width : 600px){
+  .login{
+    margin: 5rem auto;
+  }
 }
   .login h2 {
     text-align: center;

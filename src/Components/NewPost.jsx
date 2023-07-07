@@ -98,7 +98,9 @@ const NewPost = () => {
               />
             </div>
             <div className="input_grp">
-              <label htmlFor="categories">Categories:</label>
+              <label htmlFor="categories">
+                Categories: ( Comma Seperated ){" "}
+              </label>
               <input
                 {...register("categories", {
                   required: {

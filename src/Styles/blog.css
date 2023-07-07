@@ -1,17 +1,36 @@
 .blog .image{
-    height: 40vh;
+    height: 20vh;
     width: 100%;
+    margin: 0 auto;
+    max-width: 1920px;
+}
+@media screen and (min-width : 600px){
+    .blog .image{
+        height: 40vh;
+    }    
 }
 
 .blog main{
-    max-width: 1024px;
+    max-width: 1920px;
     margin: 0 auto;
     display: flex;
     justify-content: flex-end;
+    padding: 0 2rem;
+    flex-direction: column;
 }
 .blog main .left{
     flex : 1;
     margin-right: 2rem;
+}
+
+@media screen and (min-width : 800px){
+    .blog .image{
+        height: 40vh;
+    }
+    .blog main{
+        flex-direction: row;
+        padding : 0 4rem;
+    }    
 }
 
 
