@@ -199,3 +199,24 @@
 .card:hover .cat{
     opacity: 1;
 }
+
+.add_new{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    border: 1px dashed #2d2d2db5;
+    border-radius: 8px;
+    margin-top: 2rem;
+}
+
+.add_new .add_btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    color: #E4E4E4;
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: #c2410a;
+}

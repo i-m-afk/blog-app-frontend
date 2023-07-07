@@ -2,19 +2,24 @@ import React, { useState } from "react";
 import "../Styles/navbar.css";
 import { HiPlusCircle, HiMenuAlt1 } from "react-icons/hi";
 import { FaUserCircle } from "react-icons/fa";
+import { MdOutlineCancel } from "react-icons/md";
 import { IoLogOutOutline } from "react-icons/io5";
 import { Link, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
 import axios from "axios";
+import { useMediaQuery } from "react-responsive";
 
 const Navbar = () => {
   const location = useLocation();
+  const relativePath = `/user/${Cookies.get("id")}`;
   const api = axios.create({
     baseURL: "https://shayrana-backend.onrender.com/",
   });
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const sideStyle = sidebarOpen ? { display: "flex" } : { display: "none" };
+
+  const isMobile = useMediaQuery({ query: "(max-width: 700px)" });
 
   const handleLogout = async () => {
     try {
@@ -65,7 +70,7 @@ const Navbar = () => {
             )}
             {Cookies.get("login") && (
               <div className="acc nav_buttons">
-                <Link to={`user/${Cookies.get("id")}`}>
+                <Link to={relativePath}>
                   <div className="signup_btn secondary_btn">
                     <FaUserCircle size={22} />
                     Me
@@ -86,36 +91,42 @@ const Navbar = () => {
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="nav_items ham"
           >
-            <HiMenuAlt1 size={22} />
+            {sidebarOpen ? (
+              <MdOutlineCancel size={22} />
+            ) : (
+              <HiMenuAlt1 size={22} />
+            )}
           </div>
         </div>
       </div>
-      <div className="sidebar" style={sideStyle}>
-        {!Cookies.get("login") && (
-          <div className="sidebar_item">
-            <Link to="/login">Login</Link>
-          </div>
-        )}
-        {!Cookies.get("login") && (
-          <div className="sidebar_item">
-            <Link to="/signup">Signup</Link>
-          </div>
-        )}
-        {Cookies.get("login") && (
-          <Link to={`./user/${Cookies.get("id")}`}>
+      {isMobile && (
+        <div className="sidebar" style={sideStyle}>
+          {!Cookies.get("login") && (
             <div className="sidebar_item">
-              <FaUserCircle size={22} />
-              Me
+              <Link to="/login">Login</Link>
             </div>
-          </Link>
-        )}
-        {Cookies.get("login") && (
-          <div onClick={handleLogout} className="sidebar_item">
-            <IoLogOutOutline size={22} />
-            LOGOUT
-          </div>
-        )}
-      </div>
+          )}
+          {!Cookies.get("login") && (
+            <div className="sidebar_item">
+              <Link to="/signup">Signup</Link>
+            </div>
+          )}
+          {Cookies.get("login") && (
+            <Link to={relativePath}>
+              <div className="sidebar_item">
+                <FaUserCircle size={22} />
+                Me
+              </div>
+            </Link>
+          )}
+          {Cookies.get("login") && (
+            <div onClick={handleLogout} className="sidebar_item">
+              <IoLogOutOutline size={22} />
+              LOGOUT
+            </div>
+          )}
+        </div>
+      )}
     </>
   );
 };

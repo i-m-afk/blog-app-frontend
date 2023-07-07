@@ -4,12 +4,15 @@ import Navbar from "./Navbar";
 import Card from "./Card";
 import axios from "axios";
 import { MdOutlineCancel } from "react-icons/md";
+import { useMediaQuery } from "react-responsive";
+import { HiOutlinePlusCircle } from "react-icons/hi";
+import { Link } from "react-router-dom";
 const Homepage = () => {
   const [categories, setCategories] = useState([]);
   const [blogs, setBlogs] = useState([]);
   const [activeCat, setactiveCat] = useState("");
   const [activeSort, setactiveSort] = useState("time");
-
+  const isMobile = useMediaQuery({ query: "(max-width: 700px)" });
   useEffect(() => {
     const api = axios.create({
       baseURL: "https://shayrana-backend.onrender.com/",
@@ -78,6 +81,17 @@ const Homepage = () => {
         {categories.length > 0 && buildCategoryItem()}
       </div>
       <main className="home_main">
+        {isMobile && (
+          <div className="add_new">
+            <Link to="/newBlog">
+              <div className="add_btn">
+                <HiOutlinePlusCircle size={32} />
+                Create New Blog
+              </div>
+            </Link>
+          </div>
+        )}
+
         <div className="filter">
           <select
             className="filter_options"
