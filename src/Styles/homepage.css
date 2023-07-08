@@ -49,12 +49,18 @@
     padding: .1rem 1rem;
     border-radius: 8px;
 }
+
+.blogs_wrapper{
+    display: grid;
+    width: 100%;
+    place-items: center;
+}
 .blogs{
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     gap: 1rem;
     max-width: 1920px;
-    margin: 0 auto;
+    width: 100%;
 }
 @media screen and (min-width : 500px){
     .blogs{

@@ -103,18 +103,20 @@ const Homepage = () => {
             <option value="views">Views</option>
           </select>
         </div>
-        <div className="blogs">
-          {blogs.length > 0 &&
-            blogs.map((blog) => {
-              return (
-                <Card
-                  key={blog._id}
-                  blog={blog}
-                  author={blog?.author}
-                  cate={blog.categories}
-                />
-              );
-            })}
+        <div className="blogs_wrapper">
+          <div className="blogs">
+            {blogs.length > 0 &&
+              blogs.map((blog) => {
+                return (
+                  <Card
+                    key={blog._id}
+                    blog={blog}
+                    author={blog?.author}
+                    cate={blog.categories}
+                  />
+                );
+              })}
+          </div>
         </div>
       </main>
     </>

@@ -55,16 +55,18 @@ const User = () => {
         </div>
       </div>
       <h2>BLOGPOSTS</h2>
-      <section className="blogs userBlogs">
-        {blog.length > 0 &&
-          blog.map((blg) => {
-            return (
-              <Card key={blg._id} blog={blg} author={author} owner={owner}>
-                Hello
-              </Card>
-            );
-          })}
-      </section>
+      <div className="blogs_wrapper">
+        <section className="blogs userBlogs">
+          {blog.length > 0 &&
+            blog.map((blg) => {
+              return (
+                <Card key={blg._id} blog={blg} author={author} owner={owner}>
+                  Hello
+                </Card>
+              );
+            })}
+        </section>
+      </div>
     </div>
   );
 };
