@@ -76,7 +76,7 @@ a{
   font-size: 1.2rem;
 }
 
-textarea,.input_grp input[type="text"], .input_grp input[type="password"], .input_grp input[type="email"],.input_grp input[type="date"]{
+.input_grp input[type="text"], .input_grp input[type="password"], .input_grp input[type="email"],.input_grp input[type="date"]{
   
   width: 100%;
   min-height: 40px;
@@ -88,7 +88,18 @@ textarea,.input_grp input[type="text"], .input_grp input[type="password"], .inpu
   font-size: 1.15rem;
 }
 
-textarea{
+/* textarea{
   min-height: 80px;
   padding: 1rem;
+  white-space: pre;
+  overflow-wrap: break-word;
+} */
+
+
+.quill{
+  /* width: 100%;
+  border-radius: 8px;*/
+  margin-top: .5rem; 
+  font-size: 1.15rem; 
+  background-color: #fff;
 }

@@ -5,6 +5,9 @@ import Navbar from "./Navbar";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useParams } from "react-router-dom";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import DOMPurify from "dompurify";
 const EditBlog = () => {
   const { blogId } = useParams();
   if (!Cookies.get("login")) {
@@ -18,6 +21,7 @@ const EditBlog = () => {
   } = useForm({});
 
   const [blog, setBlog] = useState({});
+  const [value, setValue] = useState("");
 
   useEffect(() => {
     const api = axios.create({
@@ -28,6 +32,7 @@ const EditBlog = () => {
         const response = await api.get(`/blogs/${blogId}`);
         if (response.data.success === true) {
           setBlog(response.data.blog);
+          setValue(response.data.blog.text);
         }
       } catch (err) {
         console.log(err);
@@ -48,7 +53,7 @@ const EditBlog = () => {
         `/blogs/${blogId}`,
         {
           title: data.title,
-          text: data.text,
+          text: value,
           image: data.image_url,
           categories: cats,
         },
@@ -66,6 +71,12 @@ const EditBlog = () => {
     } catch (error) {
       setServerError(error.response?.data?.message);
     }
+  };
+
+  const handleQuill = (e) => {
+    const sanitizedContent = DOMPurify.sanitize(e);
+    console.log(sanitizedContent);
+    setValue(sanitizedContent);
   };
   return (
     <>
@@ -92,7 +103,23 @@ const EditBlog = () => {
             </div>
             <div className="input_grp">
               <label htmlFor="text">Text:</label>
-              <textarea
+              <ReactQuill
+                id="text"
+                theme="snow"
+                className="quill"
+                value={value}
+                onChange={handleQuill}
+                modules={{
+                  toolbar: [
+                    [{ header: [1, 2, 3, 4, false] }],
+                    ["bold", "italic", "underline", "strike", "blockquote"],
+                    [{ list: "ordered" }, { list: "bullet" }],
+                    ["link"],
+                    ["clean"],
+                  ],
+                }}
+              />
+              {/* <textarea
                 name="text"
                 id="text"
                 {...register("text", {
@@ -104,7 +131,7 @@ const EditBlog = () => {
                 rows={5}
                 required
                 defaultValue={blog.text}
-              />
+              /> */}
             </div>
             <div className="input_grp">
               <label htmlFor="image_url">

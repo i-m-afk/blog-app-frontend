@@ -3,7 +3,10 @@ import "../Styles/styles.css";
 import { useForm } from "react-hook-form";
 import Navbar from "./Navbar";
 import axios from "axios";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import Cookies from "js-cookie";
+import DOMPurify from "dompurify";
 const NewPost = () => {
   if (!Cookies.get("login")) {
     window.location.href = "/";
@@ -19,16 +22,19 @@ const NewPost = () => {
     baseURL: "https://shayrana-backend.onrender.com/",
   });
 
+  const [value, setValue] = useState("");
+
   const onSubmit = async (data) => {
     setServerError("");
     const cats = data.categories.split(",").map((item) => item.trim());
-    console.log(data.image_url);
+    // console.log(data.image_url);
+    // console.log(value);
     try {
       const response = await api.post(
         "/blogs",
         {
           title: data.title,
-          text: data.text,
+          text: value,
           image: data.image_url,
           categories: cats,
         },
@@ -47,6 +53,12 @@ const NewPost = () => {
     } catch (error) {
       setServerError(error.response?.data?.message);
     }
+  };
+
+  const handleQuill = (e) => {
+    const sanitizedContent = DOMPurify.sanitize(e);
+    console.log(sanitizedContent);
+    setValue(sanitizedContent);
   };
   return (
     <>
@@ -72,7 +84,30 @@ const NewPost = () => {
             </div>
             <div className="input_grp">
               <label htmlFor="text">Text:</label>
-              <textarea
+              <ReactQuill
+                className="quill"
+                id="text"
+                theme="snow"
+                value={value}
+                onChange={handleQuill}
+                modules={{
+                  toolbar: [
+                    [{ header: [1, 2, 3, 4, false] }],
+                    ["bold", "italic", "underline", "strike", "blockquote"],
+                    [{ list: "ordered" }, { list: "bullet" }],
+                    ["link"],
+                    ["clean"],
+                  ],
+                }}
+              />
+              {/* <button
+                onClick={() => {
+                  console.log(value);
+                }}
+              > */}
+              {/* show */}
+              {/* </button> */}
+              {/* <textarea
                 name="text"
                 id="text"
                 {...register("text", {
@@ -84,7 +119,7 @@ const NewPost = () => {
                 rows={5}
                 required
                 defaultValue={""}
-              />
+              /> */}
             </div>
             <div className="input_grp">
               <label htmlFor="image_url">

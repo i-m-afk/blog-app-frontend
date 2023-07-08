@@ -45,7 +45,7 @@ const Blog = () => {
       <main>
         <div className="left">
           <h1>{blog?.title}</h1>
-          <p>{blog?.text}</p>
+          <section dangerouslySetInnerHTML={{ __html: blog?.text }} />
         </div>
         <div className="right">
           <Link to={`/user/${author.id}`}>
