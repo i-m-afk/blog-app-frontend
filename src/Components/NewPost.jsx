@@ -28,8 +28,11 @@ const NewPost = () => {
 	const onSubmit = async (data) => {
 		setServerError("");
 		const cats = data.categories.split(",").map((item) => item.trim());
+		if (cats[cats.length - 1] === "") {
+			cats.pop();
+		}
 		// console.log(data.image_url);
-		// console.log(value);
+
 		try {
 			const response = await api.post(
 				"/blogs",
