@@ -7,11 +7,13 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import Cookies from "js-cookie";
 import DOMPurify from "dompurify";
+import { ThreeDots } from "react-loader-spinner";
 const NewPost = () => {
 	if (!Cookies.get("login")) {
 		window.location.href = "/";
 	}
 	const [serverError, setServerError] = useState("");
+	const [isSubmitting, setIsSubmitting] = useState(false);
 	const {
 		register,
 		handleSubmit,
@@ -27,6 +29,7 @@ const NewPost = () => {
 
 	const onSubmit = async (data) => {
 		setServerError("");
+
 		const cats = data.categories.split(",").map((item) => item.trim());
 		if (cats[cats.length - 1] === "") {
 			cats.pop();
@@ -34,6 +37,7 @@ const NewPost = () => {
 		// console.log(data.image_url);
 
 		try {
+			setIsSubmitting(true);
 			const response = await api.post(
 				"/blogs",
 				{
@@ -55,6 +59,7 @@ const NewPost = () => {
 			if (response?.data.success === true) {
 				window.location.href = "/";
 			}
+			setIsSubmitting(false);
 		} catch (error) {
 			setServerError(error.response?.data?.message);
 		}
@@ -162,7 +167,20 @@ const NewPost = () => {
 								serverError}
 						</div>
 						<button type="submit" className="primary_btn">
-							Publish
+							{isSubmitting ? (
+								<ThreeDots
+									height="30"
+									width="60"
+									radius="9"
+									color="#fff"
+									ariaLabel="three-dots-loading"
+									wrapperStyle={{}}
+									wrapperClassName=""
+									visible={true}
+								/>
+							) : (
+								"Publish"
+							)}
 						</button>
 					</form>
 				</div>

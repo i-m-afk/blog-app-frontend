@@ -6,13 +6,16 @@ import axios from "axios";
 import { FaUserCircle } from "react-icons/fa";
 import { timeDiff } from "./Card";
 import "../Styles/notfound.css";
+import Loader from "./Loader";
 const Blog = () => {
 	const { blogId } = useParams();
 	const [blog, setBlog] = useState({});
 	const [error, setError] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 
 	const [author, setAuthor] = useState({});
 	useEffect(() => {
+		setIsLoading(true);
 		const api = axios.create({
 			baseURL: "https://shayrana-backend.onrender.com/",
 		});
@@ -21,6 +24,7 @@ const Blog = () => {
 				const response = await api.get(`/blogs/${blogId}`);
 				setBlog(response.data.blog);
 				setAuthor(response.data.authorDetails);
+				setIsLoading(false);
 			} catch (err) {
 				console.log(err);
 				setError(true);
@@ -45,27 +49,31 @@ const Blog = () => {
 		<div className="blog">
 			<Navbar />
 			{!error ? (
-				<>
-					<section className="image" style={styles}></section>
-					<main>
-						<div className="left">
-							<h1>{blog?.title}</h1>
-							<section dangerouslySetInnerHTML={{ __html: blog?.text }} />
-						</div>
-						<div className="right">
-							<Link to={`/user/${author.id}`}>
-								<div className="author">
-									<FaUserCircle size={34} color="#2d2d2d" />
-									<span>{author?.fname + " " + author?.lname}</span>
-								</div>
-							</Link>
+				isLoading ? (
+					<Loader />
+				) : (
+					<>
+						<section className="image" style={styles}></section>
+						<main>
+							<div className="left">
+								<h1>{blog?.title}</h1>
+								<section dangerouslySetInnerHTML={{ __html: blog?.text }} />
+							</div>
+							<div className="right">
+								<Link to={`/user/${author.id}`}>
+									<div className="author">
+										<FaUserCircle size={34} color="#2d2d2d" />
+										<span>{author?.fname + " " + author?.lname}</span>
+									</div>
+								</Link>
 
-							<p>{author?.email}</p>
-							<p>Views : {blog?.views}</p>
-							<p>Published {timeDiff(blog?.time)} ago</p>
-						</div>
-					</main>
-				</>
+								<p>{author?.email}</p>
+								<p>Views : {blog?.views}</p>
+								<p>Published {timeDiff(blog?.time)} ago</p>
+							</div>
+						</main>{" "}
+					</>
+				)
 			) : (
 				<div className="error">
 					<div className="page404">

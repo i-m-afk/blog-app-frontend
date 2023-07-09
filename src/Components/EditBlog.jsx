@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import DOMPurify from "dompurify";
+import { ThreeDots } from "react-loader-spinner";
 const EditBlog = () => {
 	const { blogId } = useParams();
 	if (!Cookies.get("login")) {
@@ -22,6 +23,8 @@ const EditBlog = () => {
 
 	const [blog, setBlog] = useState({});
 	const [value, setValue] = useState("");
+	const [isFetching, setIsFetching] = useState(false);
+	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	useEffect(() => {
 		const api = axios.create({
@@ -29,11 +32,13 @@ const EditBlog = () => {
 		});
 		const getBlog = async () => {
 			try {
+				setIsFetching(true);
 				const response = await api.get(`/blogs/${blogId}`);
 				if (response.data.success === true) {
 					setBlog(response.data.blog);
 					setValue(response.data.blog.text);
 				}
+				setIsFetching(false);
 			} catch (err) {
 				console.log(err);
 			}
@@ -46,12 +51,14 @@ const EditBlog = () => {
 			baseURL: "https://shayrana-backend.onrender.com/",
 		});
 		setServerError("");
+
 		const cats = data.categories.split(",").map((item) => item.trim());
 		if (cats[cats.length - 1] === "") {
 			cats.pop();
 		}
 
 		try {
+			setIsSubmitting(true);
 			const response = await api.put(
 				`/blogs/${blogId}`,
 				{
@@ -68,6 +75,7 @@ const EditBlog = () => {
 				}
 			);
 			setServerError(response?.data?.message);
+			setIsSubmitting(false);
 			if (response?.data.success === true) {
 				window.location.href = "/";
 			}
@@ -87,6 +95,20 @@ const EditBlog = () => {
 			<div className="form-wrapper login">
 				<div className="form-container">
 					<h2 className="form-subheader">Update Blog</h2>
+					{isFetching && (
+						<div className="loader">
+							<ThreeDots
+								height="40"
+								width="80"
+								radius="9"
+								color="#c33c3c"
+								ariaLabel="three-dots-loading"
+								wrapperStyle={{}}
+								wrapperClassName=""
+								visible={true}
+							/>
+						</div>
+					)}
 					<form onSubmit={handleSubmit(onSubmit)}>
 						<div className="input_grp">
 							<label htmlFor="title">Title:</label>
@@ -173,7 +195,20 @@ const EditBlog = () => {
 								serverError}
 						</div>
 						<button type="submit" className="primary_btn">
-							Update
+							{isSubmitting ? (
+								<ThreeDots
+									height="30"
+									width="60"
+									radius="9"
+									color="#fff"
+									ariaLabel="three-dots-loading"
+									wrapperStyle={{}}
+									wrapperClassName=""
+									visible={true}
+								/>
+							) : (
+								"Update"
+							)}
 						</button>
 					</form>
 				</div>
